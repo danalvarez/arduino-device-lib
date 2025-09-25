@@ -1,9 +1,10 @@
-# The Things Network Arduino Library
-[![Build Status](https://travis-ci.org/TheThingsNetwork/arduino-device-lib.svg?branch=master)](https://travis-ci.org/TheThingsNetwork/arduino-device-lib)
+# The Things Network Arduino Library (fork)
+
+> **Note:** This is a fork of the now-unmaintained [arduino-device-lib](https://github.com/TheThingsNetwork/arduino-device-lib) with support for the Microchip SAMR34 and tested with ESP32. Intended as a drop-in replacement with backward compatibility.
 
 This is an [Arduino Library](https://www.arduino.cc/en/Guide/Libraries) for Arduino devices like [The Things Uno](https://www.thethingsnetwork.org/docs/devices/uno/) and [Node](https://www.thethingsnetwork.org/docs/devices/node/) to communicate via [The Things Network](https://www.thethingsnetwork.org).
 
-> At the moment this library requires devices to feature a [Microchip RN2xx3 module](http://www.microchip.com/design-centers/wireless-connectivity/embedded-wireless/lora-technology). You may also use a `SAMR34`-based board, for more information on that see [SAM34 Usage](#user-content-samr34-usage).
+> At the moment this library requires devices to feature a [Microchip RN2xx3 module](http://www.microchip.com/design-centers/wireless-connectivity/embedded-wireless/lora-technology). You may also use a `SAMR34`-based board, for more information on that see [SAMR34 Usage](#user-content-samr34-usage).
 
 ## Installation
 
@@ -17,9 +18,9 @@ This is an [Arduino Library](https://www.arduino.cc/en/Guide/Libraries) for Ardu
     * [TheThingsNetwork](docs/TheThingsNetwork.md)
     * [TheThingsMessage](docs/TheThingsMessage.md)
 
-## SAM34 Usage
+## SAMR34 Usage
 
-Compatibility between this library and the `SAMR34`-based boards is, at the moment, experimental. Boards that can be used are the [SAMR34 Xplained Pro](https://www.microchip.com/en-us/development-tool/dm320111), the [WLR089 Xplained Pro](https://www.microchip.com/en-us/development-tool/EV23M25A) or a proprietary board containing the `SAMR34`.
+Compatibility between this library and the `SAMR34`-based boards is experimental, it has only been tested with the Microchip WLR089 module.
 
 Before usage, please note the following:
 
