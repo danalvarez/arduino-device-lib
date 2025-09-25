@@ -380,12 +380,12 @@ int pgmstrcmp(const char *str1, uint8_t str2Index, uint8_t table = CMP_TABLE)
 
   switch (table) {
   case CMP_ERR_TABLE:
-    strcpy_P(str2, (char *)pgm_read_word(&(compareerr_table[str2Index])));
+    strcpy_P(str2, (char *)pgm_read_ptr(&(compareerr_table[str2Index])));
     break;
 
   default:
   case CMP_TABLE:
-    strcpy_P(str2, (char *)pgm_read_word(&(compare_table[str2Index])));
+    strcpy_P(str2, (char *)pgm_read_ptr(&(compare_table[str2Index])));
   }
 
   return memcmp(str1, str2, min(strlen(str1), strlen(str2)));
@@ -603,7 +603,7 @@ ttn_response_code_t TheThingsNetwork::getLastError(){
 void TheThingsNetwork::debugPrintIndex(uint8_t index, const char *value)
 {
   char message[100];
-  strcpy_P(message, (char *)pgm_read_word(&(show_table[index])));
+  strcpy_P(message, (char *)pgm_read_ptr(&(show_table[index])));
   debugPrint(message);
   if (value)
   {
@@ -617,10 +617,10 @@ void TheThingsNetwork::debugPrintMessage(uint8_t type, uint8_t index, const char
   switch (type)
   {
   case ERR_MESSAGE:
-    strcpy_P(message, (char *)pgm_read_word(&(error_msg[index])));
+    strcpy_P(message, (char *)pgm_read_ptr(&(error_msg[index])));
     break;
   case SUCCESS_MESSAGE:
-    strcpy_P(message, (char *)pgm_read_word(&(success_msg[index])));
+    strcpy_P(message, (char *)pgm_read_ptr(&(success_msg[index])));
     break;
   }
   debugPrint(message);
@@ -1088,19 +1088,21 @@ bool TheThingsNetwork::checkValidModuleConnected(bool autoBaudFirst)
   }
   // buffer contains "RN2xx3[xx] x.x.x ...", getting only model (RN2xx3[xx])
   char *model = strtok(buffer, " ");
-  debugPrintIndex(SHOW_MODEL, model);
-  // check if module is valid (must be RN2483, RN2483A, RN2903, RN2903AS or SAMR34)
-  if(pgmstrcmp(model, CMP_RN2483) == 0 || pgmstrcmp(model, CMP_RN2483A) == 0 || pgmstrcmp(model, CMP_RN2903) == 0 || pgmstrcmp(model, CMP_RN2903AS) == 0)
-  {
-    setModemType(TTN_MODEM_TYPE_RN);
-    debugPrintMessage(SUCCESS_MESSAGE, SCS_VALID_MODULE);
-    return true;                                                // module responded and is valid (recognized/supported)
-  }
-  else if(pgmstrcmp(model, CMP_SAMR34) == 0)
-  {
-    setModemType(TTN_MODEM_TYPE_SAMR34);
-    debugPrintMessage(SUCCESS_MESSAGE, SCS_VALID_MODULE);       // module responded and is valid (recognized/supported)
-    return true;
+  if(model != NULL) {
+    debugPrintIndex(SHOW_MODEL, model);
+    // check if module is valid (must be RN2483, RN2483A, RN2903, RN2903AS or SAMR34)
+    if(pgmstrcmp(model, CMP_RN2483) == 0 || pgmstrcmp(model, CMP_RN2483A) == 0 || pgmstrcmp(model, CMP_RN2903) == 0 || pgmstrcmp(model, CMP_RN2903AS) == 0)
+    {
+      setModemType(TTN_MODEM_TYPE_RN);
+      debugPrintMessage(SUCCESS_MESSAGE, SCS_VALID_MODULE);
+      return true;                                                // module responded and is valid (recognized/supported)
+    }
+    else if(pgmstrcmp(model, CMP_SAMR34) == 0)
+    {
+      setModemType(TTN_MODEM_TYPE_SAMR34);
+      debugPrintMessage(SUCCESS_MESSAGE, SCS_VALID_MODULE);       // module responded and is valid (recognized/supported)
+      return true;
+    }
   }
   debugPrintMessage(ERR_MESSAGE, ERR_INVALID_MODULE);
   return false;                                                 // module responded but is invalid (unrecognized/unsupported)
@@ -1457,28 +1459,28 @@ void TheThingsNetwork::sendCommand(uint8_t table, uint8_t index, bool appendSpac
   switch (table)
   {
   case MAC_TABLE:
-    strcpy_P(command, (char *)pgm_read_word(&(mac_table[index])));
+    strcpy_P(command, (char *)pgm_read_ptr(&(mac_table[index])));
     break;
   case MAC_GET_SET_TABLE:
-    strcpy_P(command, (char *)pgm_read_word(&(mac_options[index])));
+    strcpy_P(command, (char *)pgm_read_ptr(&(mac_options[index])));
     break;
   case MAC_JOIN_TABLE:
-    strcpy_P(command, (char *)pgm_read_word(&(mac_join_mode[index])));
+    strcpy_P(command, (char *)pgm_read_ptr(&(mac_join_mode[index])));
     break;
   case MAC_CH_TABLE:
-    strcpy_P(command, (char *)pgm_read_word(&(mac_ch_options[index])));
+    strcpy_P(command, (char *)pgm_read_ptr(&(mac_ch_options[index])));
     break;
   case MAC_TX_TABLE:
-    strcpy_P(command, (char *)pgm_read_word(&(mac_tx_table[index])));
+    strcpy_P(command, (char *)pgm_read_ptr(&(mac_tx_table[index])));
     break;
   case SYS_TABLE:
-    strcpy_P(command, (char *)pgm_read_word(&(sys_table[index])));
+    strcpy_P(command, (char *)pgm_read_ptr(&(sys_table[index])));
     break;
   case RADIO_TABLE:
-    strcpy_P(command, (char *)pgm_read_word(&(radio_table[index])));
+    strcpy_P(command, (char *)pgm_read_ptr(&(radio_table[index])));
     break;
   case MAC_RESET_TABLE:
-    strcpy_P(command, (char *)pgm_read_word(&(mac_reset_table[index])));
+    strcpy_P(command, (char *)pgm_read_ptr(&(mac_reset_table[index])));
     break;
   default:
     return;
