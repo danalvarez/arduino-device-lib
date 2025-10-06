@@ -1657,7 +1657,7 @@ void TheThingsNetwork::wake(uint8_t interruptPin)
   if(getModemType() == TTN_MODEM_TYPE_SAMR34)
   {
     digitalWrite(interruptPin, LOW);
-    delay(1000);
+    delay(250);
     digitalWrite(interruptPin, HIGH);
   }
   // for RN2XX3-based boards
